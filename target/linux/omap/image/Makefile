@@ -55,6 +55,17 @@ endef
 
 TARGET_DEVICES += ti_am335x-bone-black
 
+define Device/ti_am335x-miet
+  DEVICE_VENDOR := Texas Instruments
+  DEVICE_MODEL := AM335x MIET
+  DEVICE_DTS = am335x-miet
+  #KERNEL_LOADADDR := 0x80008000
+  #KERNEL := kernel-bin | append-dtb | uImage none
+  #KERNEL := kernel-bin | fit none $$(DTS_DIR)/$$(DEVICE_DTS).dtb
+endef
+
+TARGET_DEVICES += ti_am335x-miet
+
 define Device/ti_omap4-panda
   DEVICE_VENDOR := PandaBoard.org
   DEVICE_MODEL := OMAP4 TI pandaboard

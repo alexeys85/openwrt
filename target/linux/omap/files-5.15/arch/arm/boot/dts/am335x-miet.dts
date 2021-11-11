@@ -1,0 +1,254 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+ */
+/dts-v1/;
+
+#include "am335x-boneblack.dts"
+
+/ {
+	model = "TI AM335x MIET";
+	compatible = "ti,am335x-miet", "ti,am335x-bone", "ti,am33xx";
+
+	/* am335x-bone-common.dtsi */
+
+	/* У нас светодиодов нет, поэтому просто используем как OUTPUT */
+	leds {
+		/delete-node/ led2;
+		/delete-node/ led3;
+		/delete-node/ led4;
+		/delete-node/ led5;
+
+		led2 {
+			label = "tst4";
+			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led3 {
+			label = "diag";
+			gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+
+	/* тут у нас будут "кнопки", которые будут показывать наличие сигнала в INPUT */
+	/* код БУПД и TST6 */
+	gpio_buttons: gpio_buttons0 {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		code0 {
+			label = "code0";
+			linux,code = <0x100>;
+			gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
+		};
+
+		code1 {
+			label = "code1";
+			linux,code = <0x101>;
+			gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>;
+		};
+
+		code2 {
+			label = "code2";
+			linux,code = <0x102>;
+			gpios = <&gpio0 12 GPIO_ACTIVE_HIGH>;
+		};
+
+		code3 {
+			label = "code3";
+			linux,code = <0x103>;
+			gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
+		};
+
+		parity {
+			label = "parity";
+			linux,code = <0x104>;
+			gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+		};
+
+		tst6 {
+			label = "tst6";
+			linux,code = <0x105>;
+			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+	/* am335x-boneblack-common.dtsi */
+	sound {
+		status = "disabled";
+	};
+};
+
+/* am335x-bone-common.dtsi */
+
+
+&am33xx_pinmux {
+	pinctrl-0 = <&gpio_keys_pins &clkout2_pin>;
+
+	/delete-node/ user_leds_s0;
+
+	user_leds_s0: user_leds_s0 {
+		pinctrl-single,pins = <
+			AM33XX_PADCONF(AM335X_PIN_UART1_TXD, PIN_OUTPUT_PULLDOWN, MUX_MODE7) /* gpio0_15 */
+			AM33XX_PADCONF(AM335X_PIN_UART0_RTSN, PIN_OUTPUT_PULLDOWN, MUX_MODE7) /* gpio1_9 */
+		>;
+	};
+
+	gpio_keys_pins: gpio_keys_pins {
+	 	pinctrl-single,pins = <
+			AM33XX_PADCONF(AM335X_PIN_SPI0_D1, PIN_INPUT_PULLDOWN, MUX_MODE7)	/* gpio0_4 */
+			AM33XX_PADCONF(AM335X_PIN_SPI0_CS0, PIN_INPUT_PULLDOWN, MUX_MODE7)	/* gpio0_5 */
+			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7) /* gpio0_12 */
+			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLDOWN, MUX_MODE7) /* gpio0_13 */
+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7) /* gpio1_8 */
+			AM33XX_PADCONF(AM335X_PIN_UART1_RXD, PIN_INPUT_PULLDOWN, MUX_MODE7) /* gpio0_14 */
+		>;
+	};
+};
+
+&cpsw_default {
+	pinctrl-single,pins = <
+		/* Slave 1 - оставлено от BBB */
+		AM33XX_PADCONF(AM335X_PIN_MII1_RX_ER, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TX_EN, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RX_DV, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD3, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD2, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD1, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD0, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TX_CLK, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RX_CLK, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD3, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD2, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD1, PIN_INPUT_PULLUP, MUX_MODE0)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_INPUT_PULLUP, MUX_MODE0)
+
+		/* Slave 2 - скопировано из EVM SK */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A0, PIN_OUTPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a0.rgmii2_tctl */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A1, PIN_INPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a1.rgmii2_rctl */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A2, PIN_OUTPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a2.rgmii2_td3 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A3, PIN_OUTPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a3.rgmii2_td2 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A4, PIN_OUTPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a4.rgmii2_td1 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A5, PIN_OUTPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a5.rgmii2_td0 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A6, PIN_OUTPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a6.rgmii2_tclk */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A7, PIN_INPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a7.rgmii2_rclk */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A8, PIN_INPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a8.rgmii2_rd3 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A9, PIN_INPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a9.rgmii2_rd2 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A10, PIN_INPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a10.rgmii2_rd1 */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A11, PIN_INPUT_PULLDOWN, MUX_MODE2)	/* gpmc_a11.rgmii2_rd0 */
+	>;
+};
+
+&cpsw_sleep {
+	pinctrl-single,pins = <
+		/* Slave 1 reset value - аналогично */
+		AM33XX_PADCONF(AM335X_PIN_MII1_RX_ER, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TX_EN, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RX_DV, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD3, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD2, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD1, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TXD0, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_TX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD3, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD2, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD1, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		
+		/* Slave 2 reset value - аналогично */
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A0, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A1, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A2, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A3, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A4, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A5, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A6, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A7, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A8, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A9, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A10, PIN_INPUT_PULLDOWN, MUX_MODE7)
+		AM33XX_PADCONF(AM335X_PIN_GPMC_A11, PIN_INPUT_PULLDOWN, MUX_MODE7)
+	>;
+};
+
+/* добавлен второй (гигабитный) ethernet */
+&cpsw_port2 {
+	status = "okay";
+	phy-handle = <&ethphy1>;
+	phy-mode = "rgmii-id";
+	ti,dual-emac-pvid = <2>;
+};
+
+&davinci_mdio_sw {
+	/* адрес как в оригинальном BBB */
+	ethphy0: ethernet-phy@0 {
+		reg = <0>;
+		/* у нас, конечно, подключение напрямую к коммутатору и линк должен быть всегда,
+		но всё же навсяк отключаем эту фичу */
+		smsc,disable-energy-detect;
+	};
+
+	/* добавлен гигабитный порт на 5 адресе */
+	ethphy1: ethernet-phy@1 {
+		reg = <5>;
+		/* отключение EEE так как с ним линк работает нестабильно и теряются пакеты */
+		eee-broken-100tx;
+		eee-broken-1000t;
+		/* disable at803x PHY smart eee by default */
+		qca,disable-smarteee;
+		/* можно тут ограничить скорость, но тогда
+		с помощью ethtool обратно до 1G её уже будет не поднять */ 
+		/*max-speed = <100>;*/
+	};
+};
+
+&mmc3 {
+	/* mmc3 у нас нет, поэтому чтобы в dmesg не ругалось отключаем */
+	status = "disabled";
+};
+
+/* USB у нас нет */ 
+&usb {
+	status = "disabled";
+};
+
+&usb_ctrl_mod {
+	status = "disabled";
+};
+
+&usb0_phy {
+	status = "disabled";
+};
+
+&usb1_phy {
+	status = "disabled";
+};
+
+&usb0 {
+	status = "disabled";
+};
+
+&usb1 {
+	status = "disabled";
+};
+
+&lcdc {
+	status = "disabled";
+};
+
+/* i2c0 - в работе: eeprom и плата питания, остальное нет */
+&i2c1 {
+	status = "disabled";
+};
+
+&i2c2 {
+	status = "disabled";
+};
+
+&mcasp0 {
+    status = "disabled";
+};

@@ -2,7 +2,9 @@ if test -z "${devnum}"; then
 	setenv devnum 0
 fi
 
-setenv bootargs console=${console} root=/dev/mmcblk${devnum}p2 rootwait
+setenv fdtfile am335x-miet.dtb
+
+setenv bootargs console=${console} root=/dev/mmcblk${devnum}p2 rootwait ti_cpsw_new.descs_pool_size=4096
 
 load mmc ${devnum}:1 ${loadaddr} /zImage \
 && load mmc ${devnum}:1 ${fdtaddr} /dtbs/${fdtfile} \
