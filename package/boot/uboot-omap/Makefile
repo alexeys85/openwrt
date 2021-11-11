@@ -29,7 +29,7 @@ endef
 
 define U-Boot/am335x_evm
   NAME:=AM335x EVM
-  BUILD_DEVICES:=ti_am335x-evm ti_am335x-bone-black
+  BUILD_DEVICES:=ti_am335x-evm ti_am335x-bone-black ti_am335x-miet
 endef
 
 define U-Boot/omap3_beagle
