@@ -15,6 +15,24 @@ missing_lines() {
 }
 
 do_mount_root() {
+	local e2fsck=/usr/sbin/e2fsck
+	if [ -x "$e2fsck" ]; then
+		# first partition is vfat, exclude it
+		local parts=$(find /dev -maxdepth 1 -type b -name 'mmcblk1p[2-9]')
+		local reboot_req
+		for dev in $parts; do
+			echo "Checking $dev..." > /dev/kmsg
+			$e2fsck -pf $dev
+			local rc=$?
+			# sum of the following conditions:
+			# 2 - File system errors corrected, system should be rebooted
+			[ $((rc & 2)) != 0 ] && reboot_req=1
+		done
+		[ -n "$reboot_req" ] && echo "rebooting system..." > /dev/kmsg && reboot
+	else
+		echo "- $e2fsck not found -" > /dev/kmsg
+	fi
+
 	mount_root
 	boot_run_hook preinit_mount_root
 	[ -f /sysupgrade.tgz -o -f /tmp/sysupgrade.tar ] && {
