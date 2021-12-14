@@ -177,14 +177,14 @@
 
 &cpsw_emac0 {
 	/* добавлено */
-	ti,dual-emac-pvid = <1>;
+	dual_emac_res_vlan = <1>;
 };
 
 /* добавлен второй (гигабитный) ethernet */
 &cpsw_emac1 {
 	phy-handle = <&ethphy1>;
 	phy-mode = "rgmii-id";
-	ti,dual-emac-pvid = <2>;
+	dual_emac_res_vlan = <2>;
 	/* либо тут, либо при загрузке через ethtool;
 	Если тут, то тогда линк подымается в 2 раза дольше после загрузки
 	и с помощью ethtool скорость 1000 уже будет не задать
@@ -252,4 +252,8 @@
 
 &i2c2 {
 	status = "disabled";
+};
+
+&mcasp0 {
+    status = "disabled";
 };
