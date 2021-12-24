@@ -202,12 +202,23 @@
 };
 
 &davinci_mdio {
+	/* адрес как в оригинальном BBB */
+	ethphy0: ethernet-phy@0 {
+		reg = <0>;
+		/* у нас, конечно, подключение напрямую к коммутатору и линк должен быть всегда,
+		но всё же навсяк отключаем эту фичу */
+		smsc,disable-energy-detect;
+	};
+
 	/* добавлен гигабитный порт на 5 адресе */
 	ethphy1: ethernet-phy@1 {
 		reg = <5>;
 		/* отключение EEE так как с ним линк работает нестабильно и теряются пакеты */
 		eee-broken-100tx;
 		eee-broken-1000t;
+		/* disable at803x PHY smart eee by default 
+		для ядра 5.10 требуется патч из upstream */
+		qca,disable-smarteee;
 	};
 };
 

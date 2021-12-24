@@ -1,0 +1,32 @@
+From 63477a5d4c59a9272ee7217570b123b223cf7889 Mon Sep 17 00:00:00 2001
+From: Michael Walle <michael@walle.cc>
+Date: Sun, 14 Feb 2021 02:17:11 +0100
+Subject: [PATCH] net: phy: at803x: add MDIX support to AR8031/33
+
+AR8035 recently gained MDIX support. The same functions will work for
+the AR8031/33 PHY. We just need to add the at803x_config_aneg()
+callback.
+
+This was tested on a Kontron sl28 board.
+
+Signed-off-by: Michael Walle <michael@walle.cc>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+---
+ drivers/net/phy/at803x.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
+index d67bddc111e3..c2aa4c92edde 100644
+--- a/drivers/net/phy/at803x.c
++++ b/drivers/net/phy/at803x.c
+@@ -1190,6 +1190,7 @@ static struct phy_driver at803x_driver[] = {
+ 	.probe			= at803x_probe,
+ 	.remove			= at803x_remove,
+ 	.config_init		= at803x_config_init,
++	.config_aneg		= at803x_config_aneg,
+ 	.soft_reset		= genphy_soft_reset,
+ 	.set_wol		= at803x_set_wol,
+ 	.get_wol		= at803x_get_wol,
+-- 
+GitLab
+
