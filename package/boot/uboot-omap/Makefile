@@ -38,6 +38,26 @@ endef
 
 UBOOT_TARGETS:=omap4_panda am335x_evm omap3_beagle
 
+define Build/Configure
+	$(call Build/Configure/U-Boot)
+	sed -i 's/CONFIG_CC_OPTIMIZE_FOR_SIZE=y/# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_ANDROID_BOOT_IMAGE=y/# CONFIG_ANDROID_BOOT_IMAGE is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_DEFAULT_DEVICE_TREE="am335x-evm"/CONFIG_DEFAULT_DEVICE_TREE="am335x-boneblack"/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPL_MTD_SUPPORT=y/# CONFIG_SPL_MTD_SUPPORT is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPL_MUSB_NEW=y/# CONFIG_SPL_MUSB_NEW is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPL_NAND_SUPPORT=y/# CONFIG_SPL_NAND_SUPPORT is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPL_NAND_DRIVERS=y/# CONFIG_SPL_NAND_DRIVERS is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPL_NAND_ECC=y/# CONFIG_SPL_NAND_ECC is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPL_USB_GADGET=y/# CONFIG_SPL_USB_GADGET is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_MTD=y/# CONFIG_MTD is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_MTD_RAW_NAND=y/# CONFIG_MTD_RAW_NAND is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPI_FLASH=y/# CONFIG_SPI_FLASH is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/# CONFIG_RGMII is not set/CONFIG_RGMII=y/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_SPI=y/# CONFIG_SPI is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_USB=y/# CONFIG_USB is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_EFI_LOADER=y/# CONFIG_EFI_LOADER is not set/g' $(PKG_BUILD_DIR)/.config
+endef
+
 define Build/InstallDev
 	$(foreach device,$(BUILD_DEVICES), \
 		$(INSTALL_DIR) $(STAGING_DIR_IMAGE)/$(device)
