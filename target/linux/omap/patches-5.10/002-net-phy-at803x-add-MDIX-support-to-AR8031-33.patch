@@ -15,11 +15,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/phy/at803x.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-index d67bddc111e3..c2aa4c92edde 100644
 --- a/drivers/net/phy/at803x.c
 +++ b/drivers/net/phy/at803x.c
-@@ -1190,6 +1190,7 @@ static struct phy_driver at803x_driver[] = {
+@@ -1448,6 +1448,7 @@ static struct phy_driver at803x_driver[]
  	.probe			= at803x_probe,
  	.remove			= at803x_remove,
  	.config_init		= at803x_config_init,
@@ -27,6 +25,3 @@ index d67bddc111e3..c2aa4c92edde 100644
  	.soft_reset		= genphy_soft_reset,
  	.set_wol		= at803x_set_wol,
  	.get_wol		= at803x_get_wol,
--- 
-GitLab
-

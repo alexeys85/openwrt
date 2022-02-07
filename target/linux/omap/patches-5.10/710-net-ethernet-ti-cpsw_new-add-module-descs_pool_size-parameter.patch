@@ -16,8 +16,6 @@ Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 
 (limited to 'drivers/net/ethernet/ti')
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index e67b38be6b6d..1fdffcc387cc 100644
 --- a/drivers/net/ethernet/ti/cpsw_new.c
 +++ b/drivers/net/ethernet/ti/cpsw_new.c
 @@ -46,6 +46,8 @@ static int debug_level;
@@ -29,6 +27,3 @@ index e67b38be6b6d..1fdffcc387cc 100644
  
  struct cpsw_devlink {
  	struct cpsw_common *cpsw;
--- 
-cgit v1.2.3
-

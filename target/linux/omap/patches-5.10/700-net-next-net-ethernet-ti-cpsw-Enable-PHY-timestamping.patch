@@ -78,11 +78,9 @@ Acked-by: Richard Cochran <richardcochran@gmail.com>
  drivers/net/ethernet/ti/cpsw_priv.c | 22 ++++++++++++++--------
  1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
-index ecc2a6b7e28f..c99dd9735087 100644
 --- a/drivers/net/ethernet/ti/cpsw_priv.c
 +++ b/drivers/net/ethernet/ti/cpsw_priv.c
-@@ -710,20 +710,26 @@ int cpsw_ndo_ioctl(struct net_device *dev, struct ifreq *req, int cmd)
+@@ -710,20 +710,26 @@ int cpsw_ndo_ioctl(struct net_device *de
  	struct cpsw_priv *priv = netdev_priv(dev);
  	struct cpsw_common *cpsw = priv->cpsw;
  	int slave_no = cpsw_slave_index(cpsw, priv);
