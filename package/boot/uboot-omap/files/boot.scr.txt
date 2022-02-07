@@ -4,7 +4,7 @@ fi
 
 setenv fdtfile am335x-miet.dtb
 
-setenv bootargs console=${console} root=/dev/mmcblk${devnum}p2 rootwait ti_cpsw.descs_pool_size=2048
+setenv bootargs console=${console} root=/dev/mmcblk${devnum}p2 rootwait ti_cpsw.descs_pool_size=4096
 
 load mmc ${devnum}:1 ${loadaddr} /zImage \
 && load mmc ${devnum}:1 ${fdtaddr} /dtbs/${fdtfile} \
