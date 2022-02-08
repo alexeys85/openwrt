@@ -1001,6 +1001,7 @@ define KernelPackage/sched
   TITLE:=Extra traffic schedulers
   DEPENDS:=+kmod-sched-core +kmod-lib-crc32c +kmod-lib-textsearch
   KCONFIG:= \
+	CONFIG_NET_SCH_CBS \
 	CONFIG_NET_SCH_CODEL \
 	CONFIG_NET_SCH_DSMARK \
 	CONFIG_NET_SCH_GRED \
