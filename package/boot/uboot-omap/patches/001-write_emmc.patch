@@ -1,0 +1,32 @@
+--- a/include/configs/am335x_evm.h
++++ b/include/configs/am335x_evm.h
+@@ -152,6 +152,29 @@
+ 		"else " \
+ 			"setenv console ttyO0,115200n8;" \
+ 		"fi;\0" \
++	"write_emmc=" \
++		"echo Writing ${filesize} bytes to eMMC ...; " \
++		"setexpr blck_cnt ${filesize} / 0x200;" \
++		"setexpr blck_cnt ${blck_cnt} + 1;" \
++		"echo ${blck_cnt} 512-blocks to write;" \
++		"mmc dev 1;" \
++		"mmc write ${loadaddr} 0x0 ${blck_cnt};\0" \
++	"write_emmc_gz=" \
++		"echo Writing gzipped ${filesize} bytes to eMMC ...;" \
++		"gzwrite mmc 1 ${loadaddr} 0x$filesize;\0" \
++	"tftpblocksize=1400\0" \
++	"tftp_to_emmc=" \
++		"tftp ${loadaddr} openwrt.img;" \
++		"run write_emmc;\0" \
++	"tftp_to_emmc_gz=" \
++		"tftp ${loadaddr} openwrt.img.gz;" \
++		"run write_emmc_gz;\0" \
++	"nfs_to_emmc=" \
++		"nfs ${loadaddr} ${nfs_dir}openwrt.img;" \
++		"run write_emmc;\0" \
++	"nfs_to_emmc_gz=" \
++		"nfs ${loadaddr} ${nfs_dir}openwrt.img.gz;" \
++		"run write_emmc_gz;\0" \
+ 	NANDARGS \
+ 	NETARGS \
+ 	DFUARGS \
