@@ -56,6 +56,9 @@ define Build/Configure
 	sed -i 's/CONFIG_SPI=y/# CONFIG_SPI is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_USB=y/# CONFIG_USB is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_EFI_LOADER=y/# CONFIG_EFI_LOADER is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_CMD_GPT=y/# CONFIG_CMD_GPT is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_RANDOM_UUID=y/# CONFIG_RANDOM_UUID is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_EFI_PARTITION=y/# CONFIG_EFI_PARTITION is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/# CONFIG_CMD_SETEXPR is not set/CONFIG_CMD_SETEXPR=y/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/# CONFIG_CMD_UNZIP is not set/CONFIG_CMD_UNZIP=y/g' $(PKG_BUILD_DIR)/.config
 endef
