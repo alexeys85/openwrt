@@ -49,6 +49,10 @@ define Build/Configure
 	sed -i 's/CONFIG_SPL_NAND_DRIVERS=y/# CONFIG_SPL_NAND_DRIVERS is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_SPL_NAND_ECC=y/# CONFIG_SPL_NAND_ECC is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_SPL_USB_GADGET=y/# CONFIG_SPL_USB_GADGET is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_BOOTM_NETBSD=y/# CONFIG_BOOTM_NETBSD is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_BOOTM_PLAN9=y/# CONFIG_BOOTM_PLAN9 is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_BOOTM_RTEMS=y/# CONFIG_BOOTM_RTEMS is not set/g' $(PKG_BUILD_DIR)/.config
+	sed -i 's/CONFIG_BOOTM_VXWORKS=y/# CONFIG_BOOTM_VXWORKS is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_MTD=y/# CONFIG_MTD is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_MTD_RAW_NAND=y/# CONFIG_MTD_RAW_NAND is not set/g' $(PKG_BUILD_DIR)/.config
 	sed -i 's/CONFIG_SPI_FLASH=y/# CONFIG_SPI_FLASH is not set/g' $(PKG_BUILD_DIR)/.config
