@@ -37,6 +37,7 @@ while [ -n "$1" ]; do
 		-p) export SAVE_PARTITIONS=0;;
 		-k) export SAVE_INSTALLED_PKGS=1;;
 		-u) export SKIP_UNCHANGED=1;;
+		--bupd-only) export SAVE_CONFIG_BUPD_ONLY=1;;
 		-b|--create-backup) export CONF_BACKUP="$2" NEED_IMAGE=1; shift;;
 		-r|--restore-backup) export CONF_RESTORE="$2" NEED_IMAGE=1; shift;;
 		-l|--list-backup) export CONF_BACKUP_LIST=1;;
@@ -249,6 +250,10 @@ do_save_conffiles() {
 			\( -exec test -f /overlay/upper/{} \; -exec echo {} overlay \; \) -o \
 			\( -exec echo {} unknown \; \) \
 			\) | sed -e 's,.*/,,;s/\.control /\t/' > ${INSTALLED_PACKAGES}
+	fi
+
+	if [ "$SAVE_CONFIG_BUPD_ONLY" -eq 1 ]; then
+		echo "/etc/config/bupd" > "$CONFFILES"
 	fi
 
 	v "Saving config files..."
