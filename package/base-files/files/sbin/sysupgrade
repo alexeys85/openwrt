@@ -25,6 +25,7 @@ export HELP=0
 export FORCE=0
 export TEST=0
 export UMOUNT_ETCBACKUP_DIR=0
+export BUPD_ROLE=
 
 # parse options
 while [ -n "$1" ]; do
@@ -38,6 +39,7 @@ while [ -n "$1" ]; do
 		-p) export SAVE_PARTITIONS=0;;
 		-k) export SAVE_INSTALLED_PKGS=1;;
 		-u) export SKIP_UNCHANGED=1;;
+		--set-role) export BUPD_ROLE="$2"; shift;;
 		-b|--create-backup) export CONF_BACKUP="$2" NEED_IMAGE=1; shift;;
 		-r|--restore-backup) export CONF_RESTORE="$2" NEED_IMAGE=1; shift;;
 		-l|--list-backup) export CONF_BACKUP_LIST=1;;
@@ -255,9 +257,25 @@ do_save_conffiles() {
 			\) | sed -e 's,.*/,,;s/\.control /\t/' > ${INSTALLED_PACKAGES}
 	fi
 
+	# files for backup/saving generate in tmpfs in order to avoid
+	# writes to eMMC or in case if root mounted read-only
+	local backup_dir=/tmp/bupd_backup
+	local backup_dir_full="$backup_dir"/etc/uci-defaults
+	mkdir -p "$backup_dir_full"
+	# backup dropbear keys only
+	sed -i '/etc\/dropbear/!d' "$CONFFILES"
+	if [ -n "$BUPD_ROLE" ]; then
+		echo "Setting role." >&2
+		{
+			echo "uci -q set bupd.main.force_role=$BUPD_ROLE"
+			echo "exit 0"
+		} > "$backup_dir_full"/90_set_bupd
+		echo "etc/uci-defaults/90_set_bupd" >> "$CONFFILES"
+	fi
+
 	v "Saving config files..."
 	[ "$VERBOSE" -gt 1 ] && TAR_V="v" || TAR_V=""
-	tar c${TAR_V}zf "$conf_tar" -T "$CONFFILES" 2>/dev/null
+	tar c${TAR_V}zf "$conf_tar" -C "$backup_dir" -T "$CONFFILES" 2>/dev/null
 	if [ "$?" -ne 0 ]; then
 		echo "Failed to create the configuration backup."
 		rm -f "$conf_tar"
