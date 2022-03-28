@@ -24,6 +24,8 @@ export HELP=0
 export FORCE=0
 export TEST=0
 export UMOUNT_ETCBACKUP_DIR=0
+export SAVE_CONFIG_BUPD_ONLY=0
+export BUPD_ROLE=
 
 # parse options
 while [ -n "$1" ]; do
@@ -38,6 +40,7 @@ while [ -n "$1" ]; do
 		-k) export SAVE_INSTALLED_PKGS=1;;
 		-u) export SKIP_UNCHANGED=1;;
 		--bupd-only) export SAVE_CONFIG_BUPD_ONLY=1;;
+		--set-role) export BUPD_ROLE="$2"; shift;;
 		-b|--create-backup) export CONF_BACKUP="$2" NEED_IMAGE=1; shift;;
 		-r|--restore-backup) export CONF_RESTORE="$2" NEED_IMAGE=1; shift;;
 		-l|--list-backup) export CONF_BACKUP_LIST=1;;
@@ -254,6 +257,18 @@ do_save_conffiles() {
 
 	if [ "$SAVE_CONFIG_BUPD_ONLY" -eq 1 ]; then
 		echo "/etc/config/bupd" > "$CONFFILES"
+	fi
+
+	if [ -n "$BUPD_ROLE" ]; then
+		{
+			echo "uci -q set bupd.main.force_role=$BUPD_ROLE"
+			echo "exit 0"
+		} > /etc/uci-defaults/90_set_role
+		if [ "$SAVE_CONFIG_BUPD_ONLY" -eq 1 ]; then
+			echo "/etc/uci-defaults/90_set_role" >> "$CONFFILES"
+		else
+			echo "/etc/uci-defaults/90_set_role" > "$CONFFILES"
+		fi
 	fi
 
 	v "Saving config files..."
