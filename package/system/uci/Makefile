@@ -19,6 +19,7 @@ PKG_MIRROR_HASH:=2d60a8543fa00cfc75df6417354b004abf58f672c91bf0a3bffe3ea1dbf84a4
 
 PKG_LICENSE:=LGPL-2.1
 PKG_LICENSE_FILES:=
+PKG_BUILD_FLAGS:=lto
 
 PKG_MAINTAINER:=Felix Fietkau <nbd@nbd.name>
 
@@ -56,6 +57,11 @@ TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib
 CMAKE_OPTIONS += \
 	-DLUAPATH=/usr/lib/lua \
 	$(if $(DEBUG),-DUCI_DEBUG=ON)
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
 
 define Package/libuci/install
 	$(INSTALL_DIR) $(1)/lib
