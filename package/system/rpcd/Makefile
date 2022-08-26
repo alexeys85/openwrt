@@ -21,6 +21,7 @@ PKG_LICENSE:=ISC
 PKG_LICENSE_FILES:=
 
 PKG_ASLR_PIE_REGULAR:=1
+PKG_BUILD_FLAGS:=lto
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -52,6 +53,11 @@ define Package/rpcd/conffiles
 endef
 
 TARGET_LDFLAGS += -lcrypt
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
 
 define Package/rpcd/install
 	$(INSTALL_DIR) $(1)/etc/init.d
