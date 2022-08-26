@@ -12,6 +12,7 @@ CMAKE_INSTALL:=1
 
 PKG_LICENSE:=ISC
 PKG_LICENSE_FILES:=
+PKG_BUILD_FLAGS:=lto
 
 PKG_MAINTAINER:=Felix Fietkau <nbd@nbd.name>
 
@@ -57,6 +58,11 @@ endif
 ifeq ($(BUILD_VARIANT),mbedtls)
   CMAKE_OPTIONS += -DMBEDTLS=on
 endif
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
 
 define Package/libustream/default/install
 	$(INSTALL_DIR) $(1)/lib/
