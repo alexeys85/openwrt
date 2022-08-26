@@ -57,6 +57,11 @@ CMAKE_OPTIONS += \
 	-DLUAPATH=/usr/lib/lua \
 	-DABIVERSION="$(PKG_ABI_VERSION)"
 
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
+
 define Package/ubus/install
 	$(INSTALL_DIR) $(1)/bin
 	$(CP) $(PKG_INSTALL_DIR)/usr/bin/ubus $(1)/bin/
