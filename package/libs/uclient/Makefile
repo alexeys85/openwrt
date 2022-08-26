@@ -11,6 +11,7 @@ PKG_SOURCE_VERSION:=007d945467499f43656b141171d31f5643b83a6c
 CMAKE_INSTALL:=1
 
 PKG_BUILD_DEPENDS:=ustream-ssl
+PKG_BUILD_FLAGS:=lto
 
 PKG_LICENSE:=ISC
 PKG_LICENSE_FILES:=
@@ -35,6 +36,11 @@ define Package/uclient-fetch
   ALTERNATIVES:=200:/usr/bin/wget:/bin/uclient-fetch
   PROVIDES:=wget
   DEPENDS:=+libuclient
+endef
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
 endef
 
 define Package/libuclient/install
