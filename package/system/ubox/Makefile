@@ -12,6 +12,7 @@ CMAKE_INSTALL:=1
 
 PKG_LICENSE:=GPL-2.0
 PKG_LICENSE_FILES:=
+PKG_BUILD_FLAGS:=lto
 
 PKG_MAINTAINER:=John Crispin <john@phrozen.org>
 
@@ -47,6 +48,11 @@ define Package/logd
   DEPENDS:=+libubox +libubus +libblobmsg-json
   TITLE:=OpenWrt system log implementation
   USERID:=logd=514:logd=514
+endef
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
 endef
 
 define Package/getrandom/install
