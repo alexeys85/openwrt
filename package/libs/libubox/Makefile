@@ -19,6 +19,7 @@ PKG_MAINTAINER:=Felix Fietkau <nbd@nbd.name>
 PKG_BUILD_DEPENDS:=lua
 HOST_BUILD_DEPENDS:=libjson-c/host
 HOST_BUILD_PREFIX:=$(STAGING_DIR_HOST)
+PKG_BUILD_FLAGS:=lto
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/host-build.mk
@@ -70,6 +71,11 @@ TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
 CMAKE_OPTIONS += \
 	-DLUAPATH=/usr/lib/lua \
 	-DABIVERSION="$(PKG_ABI_VERSION)"
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
 
 define Package/libubox/install
 	$(INSTALL_DIR) $(1)/lib/
