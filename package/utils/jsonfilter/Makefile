@@ -10,6 +10,8 @@ PKG_SOURCE_VERSION:=c7e938d6582a436dddc938539e72dd1320625c54
 PKG_MIRROR_HASH:=0601b4d7aa5ee096e99388a57cb0701673ab58fccd6ed2984a2abbd4f846e045
 CMAKE_INSTALL:=1
 
+PKG_BUILD_FLAGS:=lto
+
 PKG_MAINTAINER:=Jo-Philipp Wich <jo@mein.io>
 PKG_LICENSE:=ISC
 
@@ -22,6 +24,11 @@ define Package/jsonfilter
   DEPENDS:=+libubox +libjson-c
   TITLE:=OpenWrt JSON filter utility
   URL:=$(PKG_SOURCE_URL)
+endef
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
 endef
 
 define Package/jsonfilter/install
