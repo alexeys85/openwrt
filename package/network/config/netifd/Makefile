@@ -38,6 +38,11 @@ CMAKE_OPTIONS += \
 	-DLIBNL_LIBS=-lnl-tiny \
 	-DDEBUG=1
 
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
+
 define Package/netifd/install
 	$(INSTALL_DIR) $(1)/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/netifd $(1)/sbin/
