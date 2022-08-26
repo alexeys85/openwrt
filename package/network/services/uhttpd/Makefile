@@ -20,6 +20,7 @@ PKG_LICENSE:=ISC
 
 PKG_ASLR_PIE_REGULAR:=1
 PKG_BUILD_DEPENDS = ustream-ssl
+PKG_BUILD_FLAGS:=lto
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -87,6 +88,11 @@ endef
 ifneq ($(CONFIG_USE_GLIBC),)
   TARGET_CFLAGS += -D_DEFAULT_SOURCE
 endif
+
+define Build/Configure
+	find $(PKG_BUILD_DIR)/ -type f -name "CMakeLists.txt" -exec sed -i 's/-Os/-O2/g' {} +
+	$(call Build/Configure/Default)
+endef
 
 define Package/uhttpd/install
 	$(INSTALL_DIR) $(1)/etc/init.d $(1)/etc/config $(1)/usr/sbin
