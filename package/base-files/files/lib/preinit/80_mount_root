@@ -28,6 +28,10 @@ do_mount_root() {
 		echo "- $e2fsck not found -" > /dev/kmsg
 	fi
 
+	# first init after firmware flashing done?
+	# no need to remount rw then
+	[ -e /init_done ] && return 0
+
 	mount_root
 	boot_run_hook preinit_mount_root
 	[ -f /sysupgrade.tgz -o -f /tmp/sysupgrade.tar ] && {
