@@ -4,8 +4,8 @@
 # Copyright (C) 2013 OpenWrt.org
 
 set -x
-[ $# -eq 5 ] || {
-    echo "SYNTAX: $0 <file> <bootfs image> <rootfs image> <bootfs size> <rootfs size>"
+[ $# -eq 6 ] || {
+    echo "SYNTAX: $0 <file> <bootfs image> <rootfs image> <bootfs size> <rootfs size> <nvramfs size>"
     exit 1
 }
 
@@ -14,11 +14,12 @@ BOOTFS="$2"
 ROOTFS="$3"
 BOOTFSSIZE="$4"
 ROOTFSSIZE="$5"
+NVRAMFSSIZE="$6"
 
 head=4
 sect=63
 
-set $(ptgen -o $OUTPUT -h $head -s $sect -l 1024 -t c -p ${BOOTFSSIZE}M -t 83 -p ${ROOTFSSIZE}M)
+set $(ptgen -o $OUTPUT -h $head -s $sect -l 1024 -t c -p ${BOOTFSSIZE}M -t 83 -p ${ROOTFSSIZE}M -t 83 -p ${NVRAMFSSIZE}M)
 
 BOOTOFFSET="$(($1 / 512))"
 BOOTSIZE="$(($2 / 512))"

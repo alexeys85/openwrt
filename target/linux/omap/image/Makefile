@@ -25,7 +25,8 @@ define Build/omap-sdcard
 		$@.boot \
 		$(IMAGE_ROOTFS) \
 		$(CONFIG_OMAP_SD_BOOT_PARTSIZE) \
-		$(CONFIG_TARGET_ROOTFS_PARTSIZE)
+		$(CONFIG_TARGET_ROOTFS_PARTSIZE) \
+		$(CONFIG_TARGET_NVRAM_PARTSIZE)
 	rm -f $@.boot
 endef
 

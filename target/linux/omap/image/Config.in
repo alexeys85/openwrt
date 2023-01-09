@@ -3,3 +3,7 @@ config OMAP_SD_BOOT_PARTSIZE
 	depends on TARGET_omap
 	default 20
 
+config TARGET_NVRAM_PARTSIZE
+	int "NVRAM filesystem partition size (in MB)"
+	depends on TARGET_omap
+	default 10
