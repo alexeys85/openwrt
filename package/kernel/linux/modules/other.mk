@@ -779,6 +779,22 @@ endef
 
 $(eval $(call KernelPackage,rtc-s35390a))
 
+define KernelPackage/rtc-vrtc
+  SUBMENU:=$(OTHER_MENU)
+  TITLE:=Virtual RTC Timer driver
+  DEFAULT:=m if ALL_KMODS && RTC_SUPPORT
+  KCONFIG:=CONFIG_RTC_DRV_VRTC \
+	CONFIG_RTC_CLASS=y
+  FILES:=$(LINUX_DIR)/drivers/rtc/rtc-vrtc.ko
+  AUTOLOAD:=$(call AutoLoad,50,rtc-vrtc,1)
+endef
+
+define KernelPackage/rtc-vrtc/description
+ Virtual RTC Timer driver
+endef
+
+$(eval $(call KernelPackage,rtc-vrtc))
+
 
 define KernelPackage/mtdtests
   SUBMENU:=$(OTHER_MENU)
