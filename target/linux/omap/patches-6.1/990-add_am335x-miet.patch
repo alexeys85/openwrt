@@ -1,6 +1,6 @@
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -855,6 +855,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
+@@ -940,6 +940,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
  	am335x-guardian.dtb \
  	am335x-icev2.dtb \
  	am335x-lxm.dtb \

@@ -1,6 +1,6 @@
 --- a/arch/arm/mach-omap2/prm-regbits-33xx.h
 +++ b/arch/arm/mach-omap2/prm-regbits-33xx.h
-@@ -21,6 +21,16 @@
+@@ -13,6 +13,16 @@
  #define AM33XX_GFX_MEM_ONSTATE_MASK			(0x3 << 17)
  #define AM33XX_GFX_MEM_RETSTATE_MASK			(1 << 6)
  #define AM33XX_GFX_MEM_STATEST_MASK			(0x3 << 4)
@@ -19,7 +19,7 @@
  #define AM33XX_PRUSS_MEM_ONSTATE_MASK			(0x3 << 5)
 --- a/arch/arm/mach-omap2/prm33xx.c
 +++ b/arch/arm/mach-omap2/prm33xx.c
-@@ -27,6 +27,25 @@
+@@ -19,6 +19,25 @@
  
  #define AM33XX_RST_GLOBAL_WARM_SW_MASK		(1 << 0)
  
@@ -45,7 +45,7 @@
  /* Read a register in a PRM instance */
  static u32 am33xx_prm_read_reg(s16 inst, u16 idx)
  {
-@@ -332,6 +351,9 @@ static int am33xx_check_vcvp(void)
+@@ -324,6 +343,9 @@ static int am33xx_check_vcvp(void)
   */
  static void am33xx_prm_global_warm_sw_reset(void)
  {
@@ -55,7 +55,7 @@
  	am33xx_prm_rmw_reg_bits(AM33XX_RST_GLOBAL_WARM_SW_MASK,
  				AM33XX_RST_GLOBAL_WARM_SW_MASK,
  				AM33XX_PRM_DEVICE_MOD,
-@@ -371,6 +393,30 @@ static void am33xx_pwrdm_restore_context
+@@ -363,6 +385,30 @@ static void am33xx_pwrdm_restore_context
  		am33xx_pwrdm_wait_transition(pwrdm);
  }
  
@@ -86,7 +86,7 @@
  struct pwrdm_ops am33xx_pwrdm_operations = {
  	.pwrdm_set_next_pwrst		= am33xx_pwrdm_set_next_pwrst,
  	.pwrdm_read_next_pwrst		= am33xx_pwrdm_read_next_pwrst,
-@@ -395,6 +441,7 @@ static struct prm_ll_data am33xx_prm_ll_
+@@ -387,6 +433,7 @@ static struct prm_ll_data am33xx_prm_ll_
  	.deassert_hardreset		= am33xx_prm_deassert_hardreset,
  	.is_hardreset_asserted		= am33xx_prm_is_hardreset_asserted,
  	.reset_system			= am33xx_prm_global_warm_sw_reset,
