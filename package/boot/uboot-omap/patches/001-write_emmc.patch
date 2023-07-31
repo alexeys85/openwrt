@@ -1,6 +1,6 @@
 --- a/include/configs/am335x_evm.h
 +++ b/include/configs/am335x_evm.h
-@@ -152,6 +152,29 @@
+@@ -151,6 +151,29 @@
  		"else " \
  			"setenv console ttyO0,115200n8;" \
  		"fi;\0" \
