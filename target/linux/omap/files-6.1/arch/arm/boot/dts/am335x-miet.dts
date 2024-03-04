@@ -206,6 +206,11 @@
 	};
 };
 
+&baseboard_eeprom {
+	compatible = "atmel,24c32";
+	pagesize = <32>;
+};
+
 &mmc3 {
 	/* mmc3 у нас нет, поэтому чтобы в dmesg не ругалось отключаем */
 	status = "disabled";
