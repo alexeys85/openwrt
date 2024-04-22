@@ -1,0 +1,24 @@
+--- a/tools/env/fw_env.c
++++ b/tools/env/fw_env.c
+@@ -1453,8 +1453,8 @@ int fw_env_open(struct env_opts *opts)
+ 		if (!crc0_ok) {
+ 			fprintf(stderr,
+ 				"Warning: Bad CRC, using default environment\n");
+-			memcpy(single->data, default_environment,
+-			       sizeof(default_environment));
++			memset(single->data, 0,
++			       ENV_SIZE);
+ 			environment.dirty = 1;
+ 		}
+ 
+@@ -1526,8 +1526,8 @@ int fw_env_open(struct env_opts *opts)
+ 		} else if (!crc0_ok && !crc1_ok) {
+ 			fprintf(stderr,
+ 				"Warning: Bad CRC, using default environment\n");
+-			memcpy(redundant0->data, default_environment,
+-			       sizeof(default_environment));
++			memset(redundant0->data, 0,
++			       ENV_SIZE);
+ 			environment.dirty = 1;
+ 			dev_current = 0;
+ 		} else {
